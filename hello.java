@@ -1,6 +1,6 @@
 public class hello {
     public static void main(String[] args) {
-        int day = 3;
+        int day = 5;
 
         switch (day) {
             case 1:
