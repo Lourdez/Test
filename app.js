@@ -1,19 +1,29 @@
-const express = require('express');
-const app = express();
+const mysql = require('mysql2');
 
-app.get('/', (req, res) => {
-    // Check if the environment is set to 'test'
-    if (process.env.NODE_ENV === 'test') {
-        res.send('Hello, Test!');
-    } else {
-        res.send('Hello, World!');
+// Replace these values with your RDS credentials
+const dbConfig = {
+  host: 'mysqldb.c9iuye0yaofx.us-east-1.rds.amazonaws.com',
+  user: 'admin',
+  password: 'mysql123',
+  database: 'mysqldb',
+};
+
+// Create a connection pool
+const pool = mysql.createPool(dbConfig);
+
+// Simple query to select data from a table
+pool.query('SELECT * FROM your_table_name', (err, results) => {
+  if (err) {
+    console.error('Error executing query:', err);
+    return;
+  }
+
+  console.log('Query results:', results);
+
+  // Close the connection pool
+  pool.end((err) => {
+    if (err) {
+      console.error('Error closing connection pool:', err);
     }
+  });
 });
-
-const port = 3000;
-
-app.listen(port, () => {
-    console.log(`Server is listening on port ${port}`);
-});
-
-module.exports = app; // Export the app for testing purposes
